@@ -30,7 +30,7 @@ int main() {
 	else
 		fprintf(stdout, "Connected to %s:%d.\n", inet_ntoa(host_addr.sin_addr), ntohs(host_addr.sin_port));
 
-	fprintf(stdout, "Calculator connected. Now use first letter for (a)ddition, (s)ubtraction, (m)ultiplication, (d)ivision for an operation.\n Example: \"a 4 5\" for addition or \"m 7 8\" for multiplication.\n");
+	fprintf(stdout, "Calculator connected. Now use first letter for (a)ddition, (s)ubtraction, (m)ultiplication, (d)ivision for an operation.\n Example: \"a 4 5\" for addition or \"m 7 8\" for multiplication.You can also use space separated expressions i.e., \"4 + 5\" or \"5 - 4\" or \"78 * 4\" or \"34 / 2 \"\n");
 
 	while(1) {		
 		fprintf(stdout, "Enter expression: ");

@@ -7,26 +7,41 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
 float calcUtil(char msgbuff[]) {
         char *temp, *op;
-        float result = 0, op1, op2;
-        temp = strtok(msgbuff, " ");
-	op = temp;	
-        temp = strtok(NULL, " ");
-        op1 = atof(temp);
-	temp = strtok(NULL, " ");
-	op2 = atof(temp);
+	float result = 0, op1, op2;
+	if(msgbuff[0] != 'a' && msgbuff[0] != 's' && msgbuff[0] != 'm' && msgbuff[0] != 'd') {
+		temp = strtok(msgbuff, " ");
+	        op1 = atof(temp);
+        	temp = strtok(NULL, " ");
+	        op = temp;
+        	temp = strtok(NULL, " ");
+	        op2 = atof(temp);
+	}
+	else {	
+        	temp = strtok(msgbuff, " ");
+		op = temp;	
+        	temp = strtok(NULL, " ");
+	        op1 = atof(temp);
+		temp = strtok(NULL, " ");
+		op2 = atof(temp);
+	}
         switch(*op) {
                 case 'a':
+		case '+':
                         result = op1 + op2;
                         break;
                 case 's':
+		case '-':
                         result = op1 - op2;
                         break;
                 case 'm':
+		case '*':
                         result = op1 * op2;
                         break;
                 case 'd':
+		case '/':
                         result = op1 / op2;
                         break;
                 default:
