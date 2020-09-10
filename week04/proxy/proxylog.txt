@@ -1,0 +1,3 @@
+file3.txt$Thu Sep 10 09:05:57 2020
+file2.txt$Thu Sep 10 09:36:38 2020
+file1.txt$Thu Sep 10 09:43:32 2020
