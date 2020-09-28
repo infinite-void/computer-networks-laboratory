@@ -7,7 +7,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#define LOCALDNS 4041
+#define LOCALDNS 4044
 
 int main() {
         int socketfd = 0, sentbytes, recvbytes;
@@ -24,12 +24,16 @@ int main() {
         host_addr.sin_port = htons(LOCALDNS);
         inet_pton(AF_INET, "127.0.0.1", &host_addr.sin_addr);
 
-        fprintf(stdout, "Enter Domain : ");
-        scanf("%s", input);
-        sentbytes = sendto(socketfd, input, strlen(input) + 1, 0, (struct sockaddr*)&host_addr, sizeof(host_addr));
-        recvbytes = recvfrom(socketfd, buffer, sizeof(buffer), 0, NULL, NULL);
-        printf("%d\n", recvbytes);
-        printf("%s", buffer);
+        while(1) {
+                fprintf(stdout, ">> Enter the HostName: ");
+                scanf("%s", input);
+                sentbytes = sendto(socketfd, input, strlen(input) + 1, 0, (struct sockaddr*)&host_addr, sizeof(host_addr));
+                if(strncmp(input, "exit", sizeof("exit")) == 0)
+                        break;
+                recvbytes = recvfrom(socketfd, buffer, sizeof(buffer), 0, NULL, NULL);
+                printf("SERVER IP OF %s : %s\n", input, buffer);
+        }
+        
         close(socketfd);
         return 0;
 }

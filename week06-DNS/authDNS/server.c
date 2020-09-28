@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#define ROOTPORT 4041
+#define AUTHPORT 4043
 extern int errno;
 int main() {
         int socketfd = 0, clientfd = 0, sentbytes, recvbytes;
@@ -23,7 +23,7 @@ int main() {
         }
 
         host_addr.sin_family = AF_INET;
-        host_addr.sin_port = htons(ROOTPORT);
+        host_addr.sin_port = htons(AUTHPORT);
         inet_pton(AF_INET, "127.0.0.1", &host_addr.sin_addr);
 
         if(bind(socketfd, (struct sockaddr*)&host_addr, sizeof(host_addr)) < 0) {
@@ -35,7 +35,7 @@ int main() {
                 recvbytes = recvfrom(socketfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &length);
 
                 fprintf(stdout, "Request received for : %s.\n", buffer);
-                FILE* fd = fopen("rootdns.txt", "r");
+                FILE* fd = fopen("authdns.txt", "r");
                 if(!fd) {
                         fprintf(stderr, "Could not access DNS records.\n");
                         sendto(socketfd, "ERROR", strlen("ERROR") + 1, 0, (struct sockaddr*)&client_addr, length);
@@ -68,14 +68,13 @@ int main() {
                         sentbytes = sendto(socketfd, "404", strlen("404") + 1, 0, (struct sockaddr*)&client_addr, length);
                 }
                 else {
-                        int fdes = open("rootdns.txt", O_WRONLY);
+                        int fdes = open("authdns.txt", O_WRONLY);
                         strcat(filebuff, lastbuff);
                         write(fdes, filebuff, strlen(filebuff));
                         close(fdes);
                         fprintf(stdout, "Response : %s.\n\n", ip);
                         sentbytes = sendto(socketfd, ip, strlen(ip) + 1, 0, (struct sockaddr*)&client_addr, length);
                 }
-
         }
         close(socketfd);
         return 0;
